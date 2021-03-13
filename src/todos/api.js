@@ -13,6 +13,10 @@ export class TodosApi {
   async getTodos() {
     await sleep(DELAY);
 
+    if (Math.random() < 0.3) {
+      return Promise.reject(`Ooops, no luck this time, try again...`);
+    }
+
     return this.todos;
   }
 }
