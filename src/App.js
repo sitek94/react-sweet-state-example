@@ -1,6 +1,6 @@
 import { TodosApi, TodosContainer, useTodos } from './todos';
+import todos from './test/todos.json';
 
-const todos = ['Read a book', 'Clean up the room', 'Go to the gym', 'Learn JS'];
 const todosApi = new TodosApi(todos);
 
 function App() {
@@ -40,8 +40,8 @@ function Todos() {
         <>
           <h2>Todos</h2>
           <ul>
-            {data.map((todo, i) => (
-              <li key={i}>Todo {i + 1}</li>
+            {data.map(({ id, title }) => (
+              <li key={id}>{title}</li>
             ))}
           </ul>
         </>
