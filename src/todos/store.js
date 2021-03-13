@@ -3,6 +3,7 @@ import { createStore, createContainer, createHook } from 'react-sweet-state';
 // Initial state
 const initialState = {
   data: [],
+  selectedTodoId: '',
   status: 'idle',
   error: null,
 };
@@ -41,6 +42,11 @@ const actions = {
       dispatch(setError(error));
     }
   },
+  selectTodoById: id => ({ setState }) => {
+    setState({
+      selectedTodoId: id,
+    });
+  },
 };
 
 // Store
@@ -50,5 +56,17 @@ const TodosStore = createStore({
   name: 'todos',
 });
 
-export const TodosContainer = createContainer(TodosStore);
+// Selectors
+const getSelectedTodoById = state => {
+  return state.data.find(todo => todo.id === state.selectedTodoId);
+};
+
+// Hooks
+export const useSelectedTodo = createHook(TodosStore, {
+  selector: getSelectedTodoById,
+});
+
 export const useTodos = createHook(TodosStore);
+
+// Container
+export const TodosContainer = createContainer(TodosStore);

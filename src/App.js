@@ -1,4 +1,6 @@
-import { TodosApi, TodosContainer, useTodos } from './todos';
+import * as React from 'react';
+
+import { TodosApi, TodosContainer, useTodos, useSelectedTodo } from './todos';
 import todos from './test/todos.json';
 
 const todosApi = new TodosApi(todos);
@@ -7,15 +9,15 @@ function App() {
   return (
     <TodosContainer api={todosApi}>
       <h1>react-sweet-state</h1>
-      <GetTodosButton />
+      <SelectedTodo />
       <Todos />
+      <GetTodosButton />
     </TodosContainer>
   );
 }
 
 function Todos() {
-  const [{ status, data, error }] = useTodos();
-
+  const [{ status, data, error }, { selectTodoById }] = useTodos();
   return (
     <div>
       {status === 'error' && (
@@ -41,11 +43,28 @@ function Todos() {
           <h2>Todos</h2>
           <ul>
             {data.map(({ id, title }) => (
-              <li key={id}>{title}</li>
+              <li key={id}>
+                <button onClick={() => selectTodoById(id)}>Select</button>{' '}
+                {title}
+              </li>
             ))}
           </ul>
         </>
       )}
+    </div>
+  );
+}
+
+function SelectedTodo() {
+  const [{ id, title }] = useSelectedTodo();
+  return (
+    <div>
+      <h2>Selected todo</h2>
+      <p>
+        Title: {title}
+        <br />
+        <small>id: {id}</small>
+      </p>
     </div>
   );
 }
