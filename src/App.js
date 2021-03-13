@@ -1,16 +1,20 @@
-import { TodosProvider, useTodos } from './todos';
+import { TodosApi, TodosContainer, useTodos } from './todos';
+
+const todos = ['Read a book', 'Clean up the room', 'Go to the gym', 'Learn JS'];
+const todosApi = new TodosApi(todos);
 
 function App() {
   return (
-    <TodosProvider>
+    <TodosContainer api={todosApi}>
       <h1>react-sweet-state</h1>
+      <GetTodosButton />
       <Todos />
-    </TodosProvider>
+    </TodosContainer>
   );
 }
 
 function Todos() {
-  const [{ status, data, error }, { load }] = useTodos();
+  const [{ status, data, error }] = useTodos();
 
   return (
     <div>
@@ -42,10 +46,17 @@ function Todos() {
           </ul>
         </>
       )}
-      <button onClick={load} disabled={status === 'pending'}>
-        {status === 'pending' ? 'Loading' : 'Fetch todos'}
-      </button>
     </div>
+  );
+}
+
+function GetTodosButton() {
+  const [{ status }, { fetchTodos }] = useTodos();
+
+  return (
+    <button onClick={fetchTodos} disabled={status === 'pending'}>
+      {status === 'pending' ? 'Loading' : 'Fetch todos'}
+    </button>
   );
 }
 
