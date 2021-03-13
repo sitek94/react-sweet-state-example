@@ -1,4 +1,4 @@
-import { createStore, createSubscriber } from 'react-sweet-state';
+import { createStore, createHook } from 'react-sweet-state';
 
 const Store = createStore({
   initialState: {
@@ -12,18 +12,15 @@ const Store = createStore({
   name: 'main',
 });
 
-const CounterSubscriber = createSubscriber(Store);
+const useCounter = createHook(Store);
 
 function App() {
+  const [{ count }, { increment }] = useCounter();
   return (
-    <CounterSubscriber>
-      {({ count }, { increment }) => (
-        <div>
-          <h1>Count: {count}</h1>
-          <button onClick={increment}>increment</button>
-        </div>
-      )}
-    </CounterSubscriber>
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={increment}>increment</button>
+    </div>
   );
 }
 
